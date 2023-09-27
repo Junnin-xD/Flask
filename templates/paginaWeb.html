@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Flask</title>
+</head>
+<body>
+    <h1>API Flask</h1>
+    
+    <!-- Formulário para consulta (GET) por nome -->
+    <h2>Consultar Registro</h2>
+    <input type="text" id="get-name" placeholder="Nome">
+    <button onclick="getRecord()">Consultar</button>
+    <div id="get-result"></div>
+
+    <!-- Formulário para criação (POST) de registro -->
+    <h2>Criar Registro</h2>
+    <input type="text" id="post-name" placeholder="Nome">
+    <input type="text" id="post-email" placeholder="Email">
+    <button onclick="createRecord()">Criar</button>
+
+    <!-- Formulário para atualização (PUT) de registro -->
+    <h2>Atualizar Registro</h2>
+    <input type="text" id="put-name" placeholder="Nome">
+    <input type="text" id="put-email" placeholder="Novo Email">
+    <button onclick="updateRecord()">Atualizar</button>
+
+    <!-- Formulário para exclusão (DELETE) de registro -->
+    <h2>Excluir Registro</h2>
+    <input type="text" id="delete-name" placeholder="Nome">
+    <button onclick="deleteRecord()">Excluir</button>
+
+    <script>
+        // Função para fazer uma solicitação GET
+        function getRecord() {
+            const name = document.getElementById('get-name').value;
+            fetch(`/?name=${name}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('get-result');
+                    resultDiv.innerHTML = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error(error));
+        }
+
+        // Função para fazer uma solicitação POST
+        function createRecord() {
+            const name = document.getElementById('post-name').value;
+            const email = document.getElementById('post-email').value;
+            const record = { "name": name, "email": email };
+            fetch('/', {
+                method: 'POST',
+                body: JSON.stringify(record),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+        }
+
+        // Função para fazer uma solicitação PUT
+        function updateRecord() {
+            const name = document.getElementById('put-name').value;
+            const email = document.getElementById('put-email').value;
+            const record = { "name": name, "email": email };
+            fetch('/', {
+                method: 'PUT',
+                body: JSON.stringify(record),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+        }
+
+        // Função para fazer uma solicitação DELETE
+        function deleteRecord() {
+            const name = document.getElementById('delete-name').value;
+            const record = { "name": name };
+            fetch('/', {
+                method: 'DELETE',
+                body: JSON.stringify(record),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+        }
+    </script>
+</body>
+</html>
